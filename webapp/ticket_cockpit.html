@@ -142,6 +142,17 @@
   section { display: flex; flex-direction: column; gap: 10px; }
   .section-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); }
 
+  .doku-toc { columns: 2; column-gap: 24px; margin: 0 0 20px; padding: 0 0 0 18px; font-size: 13px; }
+  .doku-toc li { margin: 2px 0; }
+  .doku-section h3 { font-size: 16px; }
+  .doku-funktionen ul { margin: 4px 0 0; padding-left: 20px; font-size: 13px; line-height: 1.6; }
+  .doku-funktionen li { margin: 2px 0; }
+  .doku-code {
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 14px; font-size: 12px; line-height: 1.55; overflow-x: auto; white-space: pre;
+  }
+  @media (max-width: 700px) { .doku-toc { columns: 1; } }
+
   /* ---- Upload ---- */
   .import-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
   .import-tab {
@@ -789,6 +800,8 @@
       <li><button class="nav-item" data-view="glossar" type="button">Glossar</button></li>
       <li><button class="nav-item" data-view="synonyme" type="button">Synonyme</button></li>
       <li><button class="nav-item" data-view="abkuerzungen" type="button">Abkürzungen</button></li>
+      <li class="nav-sep">Dokumentation</li>
+      <li><button class="nav-item" data-view="dokumentation" type="button">Pflichtenheft</button></li>
       <li class="nav-sep">Einstellungen</li>
       <li><button class="nav-item" data-view="einstellungen" type="button">Einstellungen</button></li>
     </ul>
@@ -2695,6 +2708,544 @@
             <input type="text" class="text-input" id="abbrev-translations-new-fr" placeholder="Französisch" style="max-width:140px;">
             <button class="btn primary" id="abbrev-translations-add-btn" type="button">Hinzufügen</button>
           </div>
+        </section>
+      </section>
+
+      <!-- ================= Dokumentation (Pflichtenheft) ================= -->
+      <section class="view-panel" data-view-panel="dokumentation" hidden>
+        <div class="view-head"><h2>Dokumentation &ndash; Pflichtenheft</h2><p class="desc">Vollständige funktionale Dokumentation aller 24 Navigationsregister dieser Webapp (Stand APP_VERSION 2.96.0): Zweck, Funktionsumfang und ein illustrierender Codeschnipsel je Register. Dient als Pflichtenheft/Referenz für Weiterentwicklung und Einarbeitung &ndash; unabhängig vom Testing-Unterbereich unter Einstellungen → Dokumentation, der die eingebetteten Testergebnisse zeigt, nicht diese Feature-Spezifikation.</p></div>
+
+        <section>
+          <p class="step-note" style="margin:0 0 14px;">Inhaltsverzeichnis – alle 24 Register:</p>
+          <ul class="doku-toc"><li><a href="#doku-dashboard-0">Dashboard</a></li><li><a href="#doku-ticket-graph-1">Ticket Graph</a></li><li><a href="#doku-trend-2">Trend</a></li><li><a href="#doku-datenqualitaet-3">Datenqualität</a></li><li><a href="#doku-import-4">Import</a></li><li><a href="#doku-jira-input-5">Jira Input</a></li><li><a href="#doku-dateiverwaltung-6">Dateiverwaltung</a></li><li><a href="#doku-listenauswahl-7">Listenauswahl</a></li><li><a href="#doku-gliederung-8">Gliederung</a></li><li><a href="#doku-massenverarbeitung-9">Massenverarbeitung</a></li><li><a href="#doku-verarbeitung-10">Verarbeitung</a></li><li><a href="#doku-releaseletter-11">Releaseletter</a></li><li><a href="#doku-benutzerhandbuch-12">Benutzerhandbuch</a></li><li><a href="#doku-editor-neues-benutzerhandbuch-13">Editor – neues Benutzerhandbuch</a></li><li><a href="#doku-ergebnisse-14">Ergebnisse</a></li><li><a href="#doku-prozessbild-15">Prozessbild</a></li><li><a href="#doku-clickanweisung-16">Clickanweisung</a></li><li><a href="#doku-bilder-17">Bilder</a></li><li><a href="#doku-output-md-tickets-output-pdf-tickets-18">Output MD Tickets / Output PDF Tickets</a></li><li><a href="#doku-infobox-19">Infobox</a></li><li><a href="#doku-glossar-20">Glossar</a></li><li><a href="#doku-synonyme-21">Synonyme</a></li><li><a href="#doku-abkuerzungen-22">Abkürzungen</a></li><li><a href="#doku-einstellungen-23">Einstellungen</a></li></ul>
+          <section class="panel doku-section" id="doku-dashboard-0" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Dashboard <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;dashboard&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Zusammengeführter, aktueller Stand aller importierten Tickets – zentrale Such-/Filter-/Export-Oberfläche.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Kennzahlen-Kacheln (<code class="mono">#tiles</code>) + Typ-Schnellfilter (Chips) mit 4 Presets: Ohne Bugs, Nur Epics, Ohne Reporting, Ohne Testing.</li><li>Domain-Chart (Balken je Domäne, klickbar als Filter).</li><li>&quot;Jira Zuordnung&quot;-Tabelle, umschaltbar zwischen Gruppierung nach Label-Kategorie oder nach Gliederungs-Kapitel (Benutzerhandbuch).</li><li>Volltextsuche (Key/Zusammenfassung/Label), Domain-/Label-Dropdown-Filter, sortierbare Spalten (Schlüssel/Beschreibung/Zusammenfassung/Status/Domain/Klassifizierung/Typ/Erstellt/Aktualisiert).</li><li>&quot;Datenprofil&quot;-Spalte (Füllgrad je Ticket relativ zum erkannten Importformat).</li><li>Mehrfachauswahl per Checkbox, Export der Auswahl als reine Jira-Nummern-Liste oder als XLSX mit Gesamtinhalt.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">app.tickets</code> (abgeleitete, gefilterte Sicht auf <code class="mono">app.ticketStore</code>) wird komplett von <code class="mono">refreshDashboard()</code> neu berechnet – inkl. Labels, Gliederungs-Kapitel, Stammdaten-Labels, Datenprofil – und ist die gemeinsame Datengrundlage für praktisch jedes andere Register (Verarbeitung, Massenverarbeitung, RAG, Listenauswahl, Exporte).</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 9919
+          function refreshDashboard(resetFilters) {
+            // Tickets ausschliesslich inaktiv gesetzter Importe (Dateiverwaltung,
+            // app.appliedInactiveImportIds) werden hier - und damit ueberall, was
+            // auf app.tickets aufbaut (Dashboard, Verarbeitung Jobs 1-7 inkl.
+            // scopedTickets(), RAG, Listenauswahl-Vorschau, Exporte) - ausgeblendet.
+            var list = [];
+            app.ticketStore.forEach(function (entry) {
+              var isActive = entry.sources.some(function (s) { return !app.appliedInactiveImportIds[s.importId]; });
+              if (isActive) list.push(entry);
+            });
+            var labelsSig = computeLabelsSignature();
+            var outlineSig = computeOutlineSignature();
+            var importFormatsSig = computeImportFormatsSignature();
+            app.tickets = list.map(function (entry) {
+              var t = entry.current;
+              var changed = entry.sources.length &gt; 1 &amp;&amp; app.changes.some(function (c) { return c.key === t.key; });
+              var domain = (t.custom_fields &amp;&amp; t.custom_fields.Domain) || &quot;&quot;;
+              var derived = ticketDerivedData(t, domain, labelsSig, outlineSig, importFormatsSig);
+              var stammdaten = buildStammdatenLabels(t, domain);
+              return {
+                raw: t, key: t.key, summary: t.summary || &quot;&quot;, status: t.status || &quot;–&quot;,
+                bucket: bucketFor(t.status), domain: domain,
+                issueType: t.issue_type || &quot;&quot;, description: t.description || &quot;&quot;,
+                created: t.created || &quot;&quot;, updated: t.updated || &quot;&quot;,
+                createdSort: parseJiraDate(t.created), updatedSort: parseJiraDate(t.updated),
+                changed: changed, points: pointsForIssueType(t.issue_type),
+                autoLabels: derived.autoLabels.concat(stammdaten.labels),
+                // ... weitere abgeleitete Felder (outlineChapters, Importformat, ...)
+              };
+            });
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-ticket-graph-1" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Ticket Graph <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;ticketgraph&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Abhängigkeiten zwischen Tickets (Vorgänger/Nachfolger/Testtickets aus Jira &quot;Issue Links&quot;) als Wissensgraph visualisieren.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>5 Darstellungsarten: Schichten, Baum (Epic), Netzwerk (Force-Layout), Matrix, Zeitleiste.</li><li>Mehrfachauswahl-Filter nach Domäne/Status/Typ, Volltextsuche, Checkbox &quot;Nur Tickets mit Abhängigkeiten&quot;.</li><li>Verlinkte, aber nicht geladene Tickets erscheinen als graue Platzhalter-Knoten statt zu fehlen.</li><li>Zoom/Pan (Strg/Cmd+Mausrad bzw. Scroll), PNG-Export, Mehrfachauswahl von Knoten → Speichern als Liste (Listenauswahl).</li><li>Eigener Tooltip, Auswahl-Detailtabelle je Knoten.</li><li>Zusätzlich zwei UNABHÄNGIGE Zusatz-Graphen im selben Register:</li><li><b>Textschnipsel-Querverweise</b>: rein deterministisch aus &quot;[Verweis]&quot;-Tags der Massenverarbeitung-Textschnipsel erkannt (kein KI-Aufruf), zeigt Kapitel-zu-Kapitel-Referenzen.</li><li><b>Kapitel-Übergänge</b>: aus dem Excel-Matrix-Arbeitsblatt &quot;Uebergaenge&quot; (Einstellungen), zeigt dort hinterlegte Übergänge/Abgrenzungen zwischen Kapiteln inkl. Richtung und fehlenden Nachweisen.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">graphBuildData()</code> filtert <code class="mono">app.tickets</code> nach Domäne/Status/Typ/Suche, ergänzt fehlende verlinkte Knoten als Phantom-Knoten und baut Kanten aus <code class="mono">t.raw.issuelinks</code>; je Ansicht übernimmt eine eigene Layout-Funktion (<code class="mono">graphComputeLayout</code>/<code class="mono">graphComputeTreeLayout</code>/<code class="mono">graphComputeForceLayout</code>/<code class="mono">graphComputeTimelineLayout</code>/<code class="mono">graphRenderMatrix</code>) das Positionieren, <code class="mono">graphRenderSvg()</code> rendert das SVG.</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 13277
+          function graphBuildData() {
+            var domains = selectedValues(els.graphDomainSelect);
+            var statuses = selectedValues(els.graphStatusSelect);
+            var types = selectedValues(els.graphTypeSelect);
+            var onlyLinked = els.graphOnlyLinkedCheckbox.checked;
+            var query = (els.graphSearchInput.value || &quot;&quot;).trim().toLowerCase();
+            var byKey = {};
+            graphScopeTickets().forEach(function (t) { byKey[t.key] = t; });
+            var candidateKeys = {};
+            graphScopeTickets().forEach(function (t) {
+              if (domains.length &amp;&amp; domains.indexOf(t.domain) === -1) return;
+              if (statuses.length &amp;&amp; statuses.indexOf(t.status) === -1) return;
+              if (types.length &amp;&amp; types.indexOf(t.issueType) === -1) return;
+              if (query &amp;&amp; t.key.toLowerCase().indexOf(query) === -1 &amp;&amp;
+                (t.summary || &quot;&quot;).toLowerCase().indexOf(query) === -1 &amp;&amp;
+                (t.description || &quot;&quot;).toLowerCase().indexOf(query) === -1) return;
+              candidateKeys[t.key] = true;
+            });
+            // Verlinkte Nachbarn werden auch dann als Knoten aufgenommen, wenn sie
+            // selbst nicht zum Filter passen (sonst wuerden Kanten &quot;ins Leere&quot;
+            // fuehren); fehlt ein verlinktes Ticket komplett, wird dafuer ein
+            // Platzhalter-Knoten erzeugt statt die Abhaengigkeit zu unterschlagen.
+            var nodeKeys = {}, phantomByKey = {}, edges = [], seenEdge = {};
+            Object.keys(candidateKeys).forEach(function (key) {
+              var t = byKey[key];
+              (t.raw.issuelinks || []).forEach(function (l) {
+                nodeKeys[key] = true; nodeKeys[l.key] = true;
+                if (!byKey[l.key]) phantomByKey[l.key] = graphPhantomNode(l.key);
+                // ... Kante je Richtung/Kategorie einmalig aufnehmen
+              });
+            });
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-trend-2" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Trend <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;trend&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Zeitlicher Verlauf der geladenen Tickets: Burndown (kumulativ erstellt/gelöst/offen) und Domain-Trend (neue Tickets je Domäne über die Zeit).</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Zeitraster umschaltbar Woche/Monat.</li><li>Burndown-Diagramm (SVG-Linienchart) + Legende, PNG-Export.</li><li>Domain-Trend: Mehrfachauswahl Domäne (leer = automatisch Top 6), eigenes SVG-Linienchart + Legende, PNG-Export.</li><li>Basiert ausschließlich auf den Feldern &quot;Erstellt&quot;/&quot;Gelöst am&quot; – Tickets ohne erkennbares Datum fließen nicht ein (mit Leer-Hinweis).</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">trendBurndownData(granularity)</code> und <code class="mono">trendDomainData(granularity, selectedDomains)</code> aggregieren <code class="mono">app.tickets</code> in Zeit-Buckets; <code class="mono">trendRenderLineChartSvg()</code> rendert beide Diagramme als SVG; <code class="mono">trendExportPng()</code> rastert das SVG per Canvas zu PNG.</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 14249
+          async function trendExportPng(container, filename) {
+            var svgEl = container.querySelector(&quot;svg&quot;);
+            if (!svgEl) { showToast(&quot;Nichts zu exportieren&quot;, &quot;Kein Diagramm zum Exportieren vorhanden.&quot;, true); return; }
+            try {
+              var blob = await svgToPngBlob(svgEl, 2);
+              var ok = await saveOrWarn(filename, blob);
+              if (ok) { showToast(&quot;Gespeichert&quot;, filename + &quot; wurde heruntergeladen.&quot;); addLog(&quot;Trend-Diagramm als Bild (PNG) exportiert: &quot; + filename); }
+            } catch (err) {
+              showToast(&quot;Fehlgeschlagen&quot;, (err &amp;&amp; err.message) || &quot;Diagramm konnte nicht als Bild exportiert werden.&quot;, true);
+            }
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-datenqualitaet-3" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Datenqualität <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;dataquality&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> 12 automatisierte, rein deterministische Prüfpunkte gegen die geladenen Tickets (kein KI-Aufruf) – &quot;möglicherweise unvollständig/inkonsistent&quot;, keine inhaltliche Bewertung.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>12 feste Prüfpunkte u. a.: fehlende Zusammenfassung/Beschreibung/Domäne/Typ/Erstellungsdatum, &quot;Erledigt ohne Gelöst-am-Datum&quot;, &quot;Veraltet&quot; (&gt;90 Tage ohne Aktualisierung bei offenem/in Bearbeitung-Status), verwaiste Issue-Link-/Epic-Verknüpfung, kein Label-Themengebiet, kein Benutzerhandbuch-Kapitel zugeordnet, Tickettyp ohne Punkte-Konfiguration.</li><li>Zusammenfassungs-Kennzahlen (Tickets geprüft / mit mind. 1 Fund / Funde gesamt) + aufklappbare Trefferliste je Prüfpunkt.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">DATA_QUALITY_CHECKS</code> ist eine deklarative Liste aus <code class="mono">{id, title, desc, test}</code>; <code class="mono">computeDataQualityResults()</code> wendet jeden <code class="mono">test(t, ctx)</code> auf <code class="mono">app.tickets</code> an und liefert die Treffer je Prüfpunkt.</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 14272
+          var DQ_STALE_DAYS = 90;
+          var DATA_QUALITY_CHECKS = [
+            { id: &quot;missing-summary&quot;, title: &quot;Fehlende Zusammenfassung&quot;, desc: &quot;Ticket hat keine (oder nur leere) Zusammenfassung.&quot;,
+              test: function (t) { return !t.summary || !t.summary.trim(); } },
+            { id: &quot;stale&quot;, title: &quot;Veraltet (&gt; &quot; + DQ_STALE_DAYS + &quot; Tage keine Aktualisierung)&quot;,
+              desc: &quot;Status offen/in Bearbeitung, aber seit über &quot; + DQ_STALE_DAYS + &quot; Tagen keine Aktualisierung.&quot;,
+              test: function (t) {
+                if (t.bucket !== &quot;backlog&quot; &amp;&amp; t.bucket !== &quot;progress&quot;) return false;
+                var ts = t.updatedSort || t.createdSort;
+                return ts &gt; 0 &amp;&amp; (Date.now() - ts) &gt; DQ_STALE_DAYS * 24 * 3600 * 1000;
+              } },
+            { id: &quot;orphan-link&quot;, title: &quot;Verwaiste Verknüpfung&quot;,
+              desc: &quot;Mindestens eine Issue-Link-Verknüpfung zeigt auf ein Ticket, das im aktuellen Bestand nicht geladen ist.&quot;,
+              test: function (t, ctx) { return (t.raw.issuelinks || []).some(function (l) { return l.key &amp;&amp; !ctx.keySet[l.key]; }); } }
+            // ... insgesamt 12 Pruefpunkte
+          ];
+          function computeDataQualityResults() {
+            var keySet = {};
+            app.tickets.forEach(function (t) { keySet[t.key] = true; });
+            var ctx = { keySet: keySet };
+            return DATA_QUALITY_CHECKS.map(function (check) {
+              var matches = app.tickets.filter(function (t) { return check.test(t, ctx); });
+              return { id: check.id, title: check.title, desc: check.desc, matches: matches };
+            });
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-import-4" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Import <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;import&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Ausgangsdaten laden – Jira-Exporte, Confluence-/Releaseinfo-Seiten, DOCX/PDF, ZIP-Archive. Neue Dateien werden zu bestehenden Tickets hinzugefügt/aktualisiert, nicht ersetzt.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>8 Import-Modi als Tabs: Jira Massenupload, Jira Einzelticket, Releaseinfo, Word (DOC/DOCX), ZIP-Archiv, Andere Importe, Ticket-Splitt (zerlegt eine Word-Datei zusätzlich in ein ZIP mit einer .docx je enthaltenem Jira-Ticket), MD-Dateien (Re-Import zuvor exportierter Ticket-Markdown-Dateien).</li><li>Drag&amp;Drop/Klick-Upload sowie &quot;Aus Zwischenablage einfügen&quot; (automatische Formaterkennung, erkennt auch eine reine Ticket-Nummern-Liste und legt sie direkt als neue Liste unter &quot;Listenauswahl&quot; an).</li><li>Optionaler Kommentar je Import.</li><li><b>Referenz-Handbuch-Upload</b>: ein bestehendes Word-Handbuch als Vergleichsgrundlage hochladen (kapitelweise erkannt über Word-Formatvorlagen Überschrift 1/2/…), erscheint NICHT als Ticket-Import, mehrere Versionen möglich.</li><li><b>Dateiansicht</b>: zeigt eine importierte Datei bereinigt/pseudonymisiert als XML-ähnlichen Text, inkl. KI-Übersetzung, Word-Export und Zusammenfassung (FastTrack-Funktionen).</li><li><b>Import-Statistik</b>: Feld-Abdeckung je Importformat nach dem letzten Import.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">ingestTickets(rawTickets, meta)</code> ist der gemeinsame Einstiegspunkt aller Importformate: PII-Bereinigung (<code class="mono">PersonAnonymizer</code>/<code class="mono">cleanTicket</code>), Domain-Normalisierung, Importformat-Filterung, danach Merge in <code class="mono">app.ticketStore</code> (neu/geändert/unverändert) inkl. Änderungsprotokoll (<code class="mono">app.changes</code>).</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 7095
+          function ingestTickets(rawTickets, meta) {
+            var anonymizer = new PersonAnonymizer();
+            var cleaned = rawTickets.map(function (t) { return asExportDict(cleanTicket(t, anonymizer)); });
+            cleaned.forEach(function (t) {
+              if (t.custom_fields &amp;&amp; t.custom_fields.Domain) t.custom_fields.Domain = normalizeDomain(t.custom_fields.Domain);
+              // Importformat-Filter NACH der PII-Bereinigung - kann nur noch Daten
+              // entfernen (deaktivierte Spalten), niemals mehr offenlegen.
+              applyImportFormatFilter(t);
+            });
+            var importId = app.nextImportId++;
+            var stats = { neu: 0, geaendert: 0, unveraendert: 0 };
+            cleaned.forEach(function (t) {
+              var existing = app.ticketStore.get(t.key);
+              if (!existing) {
+                app.ticketStore.set(t.key, { current: t, sources: [{ importId: importId, source: meta.source, when: meta.when }] });
+                stats.neu++;
+              } else {
+                var merged = mergeTicketFields(existing.current, t);
+                var diffs = diffTicket(existing.current, merged);
+                // ... Aenderungsprotokoll (app.changes) bei erkannten Unterschieden
+              }
+            });
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-jira-input-5" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Jira Input <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;jirainput&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Jira-Tickets per HTML-Massenupload einlesen (Jira &quot;Export → HTML&quot;, mehrere Dateien gleichzeitig). Ergänzt die Tickets per KI um 6 zusätzliche, editierbare Spalten.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Dropzone für mehrere .html/.htm-Dateien (Jira Issue-Navigator-Export).</li><li>Tabelle mit Suche, Seiten-Pager, Filter nach Datei/Handbuch-Status.</li><li>KI-Anreicherung (Button, mit Stop-Möglichkeit): ergänzt Sparte, Markt, Rolle, Kapitel, Unterkapitel und Status_Handbuch je Ticket – wählt Kapitel/Unterkapitel wörtlich aus der aktiven Gliederung, alle 6 Felder bleiben danach manuell editierbar (mit optischer Kennzeichnung KI-gesetzt vs. manuell geändert).</li><li>Detail-Modal je Ticket, CSV-Export, &quot;Relabel&quot;-Funktion, Quelldatei-Ansicht/-Download, direkte Übernahme ausgewählter Tickets in den Benutzerhandbuch-Kapitel-Generator (Checkbox &quot;manual-use-jira&quot;).</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">jfBuildPrompt(batch)</code> baut den KI-Prompt (inkl. aktueller Gliederung über <code class="mono">jfOutlineForPrompt()</code>), die Antwort wird per <code class="mono">jfParseArray()</code> als JSON-Array geparst und über <code class="mono">jfApplySuggestion()</code>/<code class="mono">jfPick()</code> nur auf erlaubte, wörtlich passende Werte angewendet (kein Freitext/Erfinden neuer Kategorien).</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 22089
+          function jfOutlineForPrompt() {
+            return (app.outline || []).map(function (c) {
+              return &quot;- &quot; + c.title + ((c.subs || []).length ? &quot; | Unterkapitel: &quot; + c.subs.map(function (s) { return s.title; }).join(&quot;; &quot;) : &quot;&quot;) +
+                ((c.domains || []).length ? &quot; | Domänen: &quot; + c.domains.join(&quot;, &quot;) : &quot;&quot;);
+            }).join(&quot;\n&quot;);
+          }
+          function jfBuildPrompt(batch) {
+            var tickets = batch.map(function (t) {
+              return JSON.stringify({ key: t.key, zusammenfassung: t.summary, typ: t.issueType, status: t.status, domain: t.domain,
+                komponenten: t.components, worktype: t.worktype, market: t.market, teams: t.teams,
+                beschreibung: truncate(t.description || &quot;&quot;, 1200), bug_beschreibung: truncate(t.bugDescription || &quot;&quot;, 500) });
+            }).join(&quot;\n&quot;);
+            return ragPromptFor(&quot;jiraInputClassify&quot;) +
+              &quot;\n\nErlaubte Werte:\n- sparte: &quot; + JF_SPARTEN.join(&quot; | &quot;) + &quot;\n- rolle: &quot; + JF_ROLLEN.join(&quot; | &quot;) +
+              &quot;\n- kapitel: GENAU einer der Kapiteltitel der Gliederung unten (wörtlich) oder \&quot;\&quot;&quot; +
+              &quot;\n\nAktive Gliederung:\n&quot; + jfOutlineForPrompt() +
+              &quot;\n\nAntworte AUSSCHLIESSLICH mit einem JSON-Array ... \n\nTickets (je Zeile ein JSON-Objekt):\n&quot; + tickets;
+          }
+          function jfParseArray(text) {
+            var s = (text || &quot;&quot;).replace(/</pre>
+          </section>
+          <section class="panel doku-section" id="doku-dateiverwaltung-6" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Dateiverwaltung <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;dateiverwaltung&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Alle importierten Dateien verwalten sowie Tickets einsehen, die sich zwischen zwei Importen geändert haben.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Import-Tabelle: Aktiv/Inaktiv-Schalter je Datei (wirkt erst nach &quot;Aktualisieren&quot;, damit Dashboard/Verarbeitung nur auf aktiven Dateien laufen), Quelle/Format/Zeitpunkt/Tickets/Neu/Geändert/Unverändert/Pseudonymisiert/Kommentar, Löschen eines Imports.</li><li>&quot;Geänderte/doppelte Ticket-Einträge&quot;-Tabelle mit Alt-/Neu-Wert-Vergleich und Vergleichsdialog (Original vs. Zwischenschritt).</li><li>Feste Domain-Normalisierungstabelle (Anzeige, welche Schreibweisen-Varianten vereinheitlicht werden).</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">deleteImport(importId)</code> entfernt einen Import rückwirkend aus <code class="mono">app.ticketStore</code>/<code class="mono">app.changes</code> – ein Ticket wird nur gelöscht, wenn KEINE andere Quelle es mehr referenziert (&quot;irgendeine Quelle reicht&quot;-Prinzip), sonst bleibt der gemergte Datensatz aus den übrigen Quellen bestehen.</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 12188
+          function deleteImport(importId) {
+            var imp = app.imports.filter(function (i) { return i.id === importId; })[0];
+            if (!imp) return;
+            var removedTicketCount = 0, affectedTicketCount = 0, keysToDelete = [];
+            app.ticketStore.forEach(function (entry, key) {
+              if (!entry.sources.some(function (s) { return s.importId === importId; })) return;
+              entry.sources = entry.sources.filter(function (s) { return s.importId !== importId; });
+              if (entry.sources.length === 0) { keysToDelete.push(key); removedTicketCount++; }
+              else affectedTicketCount++;
+            });
+            keysToDelete.forEach(function (k) { app.ticketStore.delete(k); });
+            app.changes = app.changes.filter(function (c) { return !(c.to.source === imp.source &amp;&amp; c.to.when === imp.when); });
+            app.imports = app.imports.filter(function (i) { return i.id !== importId; });
+            refreshDashboard(false);
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-listenauswahl-7" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Listenauswahl <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;listenauswahl&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Im Dashboard per Checkbox ausgewählte Tickets als benannte, datierte Liste dauerhaft speichern – unabhängig von späteren Änderungen der Dashboard-Auswahl.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Live-Anzeige der aktuellen Dashboard-Auswahl, Typ-Schnellfilter (gleiche 4 Presets wie Dashboard) zur Eingrenzung VOR dem Speichern.</li><li>Vorschau-Tabelle der zu speichernden Tickets, Listenname frei wählbar.</li><li>Tabelle aller gespeicherten Listen (Name/Datum/Anzahl) mit Aktionen (vermutlich Re-Export/Löschen).</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">app.savedLists</code> speichert sowohl die reinen Ticket-Keys als auch eine eigene, unabhängige Kopie der Ticket-Inhalte – eine Liste bleibt dadurch auch nutzbar, wenn das Originalticket später gelöscht/geändert wird.</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 12391
+          els.listenauswahlSaveBtn.addEventListener(&quot;click&quot;, function () {
+            var tickets = selectedTickets().filter(matchesListPreviewFilter);
+            if (!tickets.length) return;
+            var name = (els.listenauswahlNameInput.value || &quot;&quot;).trim() || (&quot;Liste vom &quot; + nowLabel());
+            app.savedLists.unshift({
+              id: app.nextSavedListId++, name: name, when: nowLabel(),
+              keys: tickets.map(function (t) { return t.key; }),
+              tickets: tickets.map(function (t) {
+                return { key: t.key, summary: t.summary, status: t.status, domain: t.domain, issueType: t.issueType,
+                  points: t.points, autoLabels: t.autoLabels, description: (t.raw &amp;&amp; t.raw.description) || &quot;&quot; };
+              })
+            });
+            renderSavedLists();
+            addLog(&quot;Liste „&quot; + name + &quot;“ gespeichert (&quot; + tickets.length + &quot; Tickets).&quot;);
+          });</pre>
+          </section>
+          <section class="panel doku-section" id="doku-gliederung-8" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Gliederung <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;gliederung&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Stichwort-Register je Unterkapitel der Benutzerhandbuch-Gliederung, deterministisch (Text-Häufigkeitsanalyse, kein KI-Aufruf) aus den zugeordneten Jira-Tickets extrahiert – daher immer verfügbar.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Mindestens 80 Stichwörter je Unterkapitel + Label-Themengebiet (oder alternativ direkt für die im Dashboard ausgewählten Tickets); bei zu wenig Ticket-Text wird aus der Einstellungen-Begriffsliste aufgefüllt (als &quot;0 Tickets&quot; klar gekennzeichnet statt eine Zuordnung vorzutäuschen).</li><li>Stichwörter frei editierbar (umbenennen/löschen/manuell hinzufügen), je Stichwort aufklappbar: zugehöriger Text (aus Benutzerhandbuch-Kapitel-Generator oder Rohdaten-Auszug) + anklickbare Quell-Tickets.</li><li><b>Chat</b> und <b>&quot;Grill me&quot;</b>: zwei KI-Funktionen zum ausgewählten Unterkapitel – Chat für Rückfragen zu Tickets/Stichwörtern, &quot;Grill me&quot; für offene Themen/Widersprüche/Verbesserungsvorschläge.</li><li>Erweiterte Volltextsuche über alle Tickets mit Anzeige benachbarter Themenfelder (Überschneidung mit bereits erzeugten Stichwörtern anderer Unterkapitel).</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">glExtractKeywords(tickets)</code> zählt Wort-/Begriffshäufigkeit aus Zusammenfassung/Beschreibung/Domäne/Typ (Stoppwörter gefiltert) plus automatisch erkannte Labels (doppelt gewichtet), <code class="mono">glPadToMinimum()</code> füllt bei Bedarf aus der Einstellungen-Begriffsliste auf.</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 21255
+          function glExtractKeywords(tickets) {
+            var freq = {}, ticketsByTerm = {}, displayByTerm = {};
+            tickets.forEach(function (t) {
+              var text = [t.summary, t.description, t.domain, t.issueType].filter(Boolean).join(&quot; &quot;);
+              var seen = {};
+              glTokenize(text).forEach(function (w) {
+                var lower = w.toLowerCase();
+                if (GL_STOPWORDS[lower] || seen[lower]) return;
+                seen[lower] = true;
+                freq[lower] = (freq[lower] || 0) + 1;
+                if (!displayByTerm[lower]) displayByTerm[lower] = glPreferredCase(w);
+                (ticketsByTerm[lower] = ticketsByTerm[lower] || []).push(t.key);
+              });
+              (t.autoLabels || []).forEach(function (lbl) {
+                // automatisch erkannte Labels zaehlen doppelt (freq += 2)
+                var lower = lbl.toLowerCase();
+                freq[lower] = (freq[lower] || 0) + 2;
+                displayByTerm[lower] = lbl;
+                (ticketsByTerm[lower] = ticketsByTerm[lower] || []).push(t.key);
+              });
+            });
+            var order = Object.keys(freq).sort(function (a, b) { return freq[b] - freq[a] || a.localeCompare(b, &quot;de&quot;); });
+            return order.map(function (lower) { return { term: displayByTerm[lower], tickets: dedupeStrings(ticketsByTerm[lower]) }; });
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-massenverarbeitung-9" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Massenverarbeitung <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;massenverarbeitung&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Alle Markdown-Textschnipsel an einem Ort sammeln, je Domäne/Kapitel einordnen – eigenständig und unabhängig von der RAG-Bibliothek (Verarbeitung Job 7), eigener Datenbestand <code class="mono">app.massFiles</code>.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>MD-Datei- oder ZIP-Upload, &quot;Vorhandene Inhalte einlesen&quot; (übernimmt bereits erzeugte Benutzerhandbuch-/Referenz-Handbuch-Kapitel), &quot;Tickets übernehmen&quot; (importierte Tickets direkt als Textschnipsel, gemeinsamer Zustand mit Verarbeitung Schritt 1).</li><li>Gruppierte Anzeige je Domäne, Sortierung innerhalb jeder Domäne nach Gliederungsreihenfolge (&quot;Nicht zugeordnet&quot; zuletzt).</li><li>Domäne/Kapitel-Zuordnung: automatischer Vorschlag aus Datei-Inhalt (Vorkommen von Domänen-/Kapitelbegriffen), editierbar.</li><li>Mehrfachauswahl (auch per Namensmuster) + Massenzuordnung Domäne/Kapitel auf einmal.</li><li><b>KI-Zuordnung</b>: Claude schlägt für unvollständige Einträge Domäne/Kapitel wörtlich aus der vorhandenen Liste vor (nie erfunden), mit Stop-Button und automatischen Zwischenversionen alle 50 verarbeitete Einträge.</li><li>&quot;Zusammenfassung je Kapitel&quot; (ein Gesamttextfile, sortiert Domäne→Kapitel) und &quot;Alle MD-Dateien zusammenführen&quot; (je Domäne eine Datei) – beide direkt bearbeitbar und als Datei speicherbar.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> Dieselbe KI-Zuordnungs-Logik wie bei Jira Input (<code class="mono">jfApplySuggestion</code>/<code class="mono">jfPick</code>-Prinzip: nie erfinden, nur wörtlich aus vorhandener Liste wählen) – hier über <code class="mono">massBuildAiAssignmentPrompt</code>/<code class="mono">massParseAiAssignment</code> (Domäne + Kapitel statt der 6 Jira-Input-Felder).</p>
+          </section>
+          <section class="panel doku-section" id="doku-verarbeitung-10" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Verarbeitung <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;verarbeitung&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Sieben Arbeitsschritte, um aus den Ticket-Beschreibungen die Rohdaten für Releaseletter/Benutzerhandbuch/Prozessbild/Clickanweisung aufzubereiten.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li><b>Jira Verarbeitung</b> – Protokoll/Audit-Log aller Verarbeitungsschritte der Sitzung.</li><li><b>Vergleich Jira Tickets</b> – Tickets mit unterschiedlichem Datenstand über mehrere Importe hinweg (identisch zur Dateiverwaltung), Original- vs. Zwischenschritt-Vergleich.</li><li><b>Glossar &amp; Abkürzungen extrahieren</b> – findet Großbuchstaben-Kürzel sowie häufige Status-/Typ-/Domain-Werte als Kandidaten, mit unverbindlichem DE/EN-Bedeutungsvorschlag bei allgemein bekannten Kürzeln (firmenspezifisch/mehrdeutig bleibt bewusst leer). Ergebnisse fließen zusätzlich in die Register Glossar/Abkürzungen.</li><li><b>Releaseversion</b> – Abgleich gegen eine Releaseversion.</li><li><b>Jira Liste</b> – Listendarstellung.</li><li><b>Domänen-Übersicht</b> – Aggregation je Domäne.</li><li><b>RAG: Zusammenfassung &amp; Fließtext</b> – KI-generierter Text (im Unterschied zu Jobs 1–6, die als XLSX/DOCX/PDF exportierbar sind, erzeugt Job 7 stattdessen Markdown).</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">extractAbbreviations(tickets)</code> (Job 3) zählt per Regex (<code class="mono">ABBREV_RE</code>) erkannte Kürzel über Zusammenfassung/Beschreibung/alle Custom Fields, zählt Häufigkeit + bis zu 3 Beispiel-Tickets und ergänzt einen optionalen Bedeutungsvorschlag (<code class="mono">abbrevMeaningSuggestion</code>).</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 12726
+          function extractAbbreviations(tickets) {
+            var counts = {};
+            tickets.forEach(function (t) {
+              var parts = [t.summary, t.description];
+              if (t.custom_fields) Object.keys(t.custom_fields).forEach(function (k) { parts.push(t.custom_fields[k]); });
+              var text = parts.filter(Boolean).join(&quot; \n &quot;);
+              var seenInTicket = {};
+              var m;
+              ABBREV_RE.lastIndex = 0;
+              while ((m = ABBREV_RE.exec(text))) {
+                var tok = m[0];
+                if (seenInTicket[tok]) continue;
+                seenInTicket[tok] = true;
+                if (!counts[tok]) counts[tok] = { term: tok, count: 0, examples: [] };
+                counts[tok].count++;
+                if (counts[tok].examples.length &lt; 3) counts[tok].examples.push(t.key);
+              }
+            });
+            return Object.keys(counts).map(function (k) {
+              var r = counts[k];
+              var suggestion = abbrevMeaningSuggestion(r.term);
+              r.suggestedDe = suggestion.de; r.suggestedEn = suggestion.en;
+              return r;
+            }).sort(function (a, b) { return b.count - a.count || a.term.localeCompare(b.term); });
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-releaseletter-11" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Releaseletter <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;releaseletter&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Entwurf eines Release-Letters aus ausgewählten Tickets, verständlich für oneSCM-Endnutzer, auf Deutsch oder Englisch – automatisch erzeugtes Rohgerüst, vor Versand redaktionell zu prüfen.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Ticket-Quelle: aktuell im Dashboard gefilterte Tickets, Ticket-Keys per Hand, oder das <b>Jira-Input-Ergebnis</b> (Tabelle aus dem Register &quot;Jira Input&quot; mit allen KI-Zuordnungen, eigener Filter-Block &quot;Jira Input – Gesamtergebnis mit Zuordnung&quot;: Filter nach Datei/Kapitel/Unterkapitel/Sparte/Rolle/Markt, &quot;Nicht relevant&quot;-Ausblendung, Texte je Kapitel/Unterkapitel als Fließtext oder Zusammenfassung erzeugen, als Markdown/ZIP exportieren oder direkt ins Benutzerhandbuch übernehmen).</li><li>Rollenhinweis optional (Retail/Markt/MO/HQ).</li><li>Export als Markdown/DOCX/PDF/XLSX (Tickets-Tabelle).</li><li>Negativlisten-Begriffe (Einstellungen) werden in der Vorschau gelb markiert.</li><li><b>Handbuch-Änderung nach Kapitel</b>: Vergleich gegen ein hochgeladenes Referenz-Handbuch (alter Stand) vs. bereits erzeugter Benutzerhandbuch-Text (neuer Stand), inkl. KI-Änderungsanalyse (neue Features, Widersprüche) – dieselbe Zuordnung/Ansicht wie im Benutzerhandbuch-Register.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> Releaseletter, Benutzerhandbuch(-Rohgerüst) und Clickanweisung teilen sich dieselbe generische Infrastruktur <code class="mono">GENERATORS</code>/<code class="mono">wireTextGenerator(kind)</code>: ein Config-Objekt je Art (<code class="mono">render</code>-Funktion + Dateiendung), eine gemeinsame Funktion verdrahtet Formular, DE/EN-Vorschau-Umschalter, Negativlisten-Hervorhebung und alle Export-Buttons.</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 15641
+          var GENERATORS = {
+            releaseletter: { render: renderReleaseLetter, ext: &quot;md&quot; },
+            benutzerhandbuch: { render: renderUserManual, ext: &quot;md&quot; },
+            clickanweisung: { render: renderClickInstructions, ext: &quot;md&quot; }
+          };
+          function wireTextGenerator(kind) {
+            var cfg = GENERATORS[kind];
+            var highlightsNegativeWords = kind === &quot;releaseletter&quot; || kind === &quot;benutzerhandbuch&quot;;
+            var preview = document.getElementById(kind + &quot;-preview&quot;);
+            var generateBtn = document.getElementById(kind + &quot;-generate-btn&quot;);
+            var roleSelect = document.getElementById(kind + &quot;-role-select&quot;); // nur bei releaseletter vorhanden
+            var contentByVariant = { de: &quot;&quot;, en: &quot;&quot; };
+            function applyVariant(v) {
+              lastContent = contentByVariant[v];
+              preview.innerHTML = highlightsNegativeWords ? highlightNegativeWordsHtml(lastContent) : termMarkHtml(escapeHtml(lastContent));
+            }
+            generateBtn.addEventListener(&quot;click&quot;, function () {
+              var tickets = resolveGeneratorTickets(kind);
+              if (!tickets.length) { showToast(&quot;Keine Tickets&quot;, &quot;Keine passenden Tickets gefunden.&quot;, true); return; }
+              var role = roleSelect ? roleSelect.value : &quot;alle&quot;;
+              contentByVariant.de = termApply(cfg.render(lastTitle, tickets, &quot;de&quot;, role));
+              contentByVariant.en = termApply(cfg.render(lastTitle, tickets, &quot;en&quot;, role));
+              applyVariant(currentVariant);
+            });
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-benutzerhandbuch-12" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Benutzerhandbuch <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;benutzerhandbuch&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Rohgerüst eines Benutzerhandbuchs zur Bedienung von oneSCM sowie der ausgewachsene <b>Kapitel-Generator</b> – professioneller, mehrseitiger KI-Fließtext je Gliederungskapitel.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Einfaches Rohgerüst (wie Releaseletter) über dieselbe <code class="mono">GENERATORS</code>-Infrastruktur.</li><li><b>Kapitel-Generator</b>: Filter nach Datei-Scope/Domäne/Label-Themengebiet/Kapitel, Gruppierung &quot;Nach Kapitel&quot; oder &quot;Nach Label-Themengebiet&quot;, Rollenfilter.</li><li>Claude erzeugt den Text über die <code class="mono">sample</code>-Capability (nur in der Claude-Artifact-Laufzeit) – erfindet keine Fakten, nutzt nur Ticket-Daten; Prompt editierbar unter Einstellungen → RAG-Prompts.</li><li>Erneutes Erzeugen für ein bereits vorhandenes Kapitel überschreibt nicht, sondern legt eine <b>Version</b> (Name+Datum) an, wiederherstellbar.</li><li>Optionaler lokaler Zielordner (File System Access API) – jedes Kapitel wird sofort als eigene .md-Datei abgelegt.</li><li><b>Lauf-Fortsetzung (&quot;Resume&quot;)</b>: ein unterbrochener Generierungslauf merkt sich bereits fertige Kapitel/Label-Gruppen (<code class="mono">manualRunState</code>, persistiert über <code class="mono">aiMetaPut</code>) und lässt sich fortsetzen, statt alles neu zu erzeugen.</li><li><b>KI-Antwort-Cache</b> (<code class="mono">aiCacheStats</code>): zählt Treffer/Fehlschläge wiederverwendeter KI-Antworten während des Laufs, mit eigenem Lösch-Button in den Einstellungen.</li><li>Automatischer Zwischenstand im Protokoll alle 20 fertiggestellte Texte sowie eine Hintergrund-Zwischenversion alle 50 Durchgänge.</li><li>&quot;Alle Kapitel zusammenführen&quot; zu einem Gesamtdokument in Gliederungsreihenfolge.</li><li>Export je Kapitel als DOCX/PDF (inkl. Icon-/Farbsystem für Rollen-/Callout-Tags) sowie des gesamten Rohgerüsts als Markdown/DOCX/PDF/XLSX.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">manualGenerateChapters(resumeRun)</code> ist die zentrale, sequenzielle (Stop-fähige) Verarbeitungsschleife über alle Ziel-Gruppen (Kapitel oder Label-Themengebiete); <code class="mono">manualTargetGroups()</code>/<code class="mono">manualRowsForGroup()</code> bestimmen vorab einmalig die passenden Tickets je Gruppe (Performance: O(Tickets) statt O(Gruppen×Tickets)).</p>
+            <div class="doku-funktionen"><b>Ergänzung:</b><ul><li><b>Lauf-Fortsetzung</b>: ein abgebrochener Kapitel-Generator-Lauf zeigt einen Hinweis mit &quot;Lauf fortsetzen&quot;/&quot;Verwerfen&quot; (<code class="mono">manual-resume-wrap</code>), Zustand in <code class="mono">manualRunState</code> (persistiert).</li><li><b>KI-Zwischenspeicher</b>: zeigt Treffer/Fehlschläge wiederverwendeter KI-Antworten, mit Button &quot;Zwischenspeicher leeren&quot;.</li><li><b>Qualitätsprüfung &quot;Alle prüfen&quot;</b>: prüft alle erzeugten Kapitel auf einmal.</li><li><b>Verwaiste Kapitel</b>: nach einem Gliederungs-Update nicht mehr zuordenbare, bereits erzeugte Kapitel bleiben erhalten statt gelöscht zu werden; gezielt auf ein aktuelles Kapitel übernehmen oder verwerfen.</li><li><b>Kapitel-Übersicht</b>: Tabelle (Kapitel/Wörter/Tickets/Erzeugt/Download), ZIP-Download aller Kapitel als einzelne Markdown-Dateien.</li><li><b>1. Handbuch-Layout</b>: setzt alle Kapitel ohne KI in ein fertiges Layout (Deckblatt, vollständiges Inhaltsverzeichnis, Kapitel-Icons, Hinweis-/Warnboxen; offene Kapitel mit Hinweis &quot;Kapitel noch offen&quot;), als HTML herunterladbar oder direkt druckbar/als PDF speicherbar.</li><li><b>2. Sprachstil, Grammatik, Tonalität verbessern</b>: KI überarbeitet jedes Kapitel sprachlich ohne Inhalte zu ändern; Änderungen gelb markiert mit Tooltip der vorherigen Formulierung; &quot;Alle Verbesserungen übernehmen&quot; oder Export als Markdown.</li><li><b>3. Review &amp; Audit (Prüf-Skills)</b>: mehrere KI-Prüfer mit festen Rollen prüfen unabhängig voneinander, je Score 0–100 + konkrete Befunde (Zitat+Vorschlag); optionaler Autofix-Loop (Nachbessern + erneut prüfen bis alle bestehen oder Rundenlimit erreicht ist, 1–3 Runden einstellbar); Prüfbericht als Markdown herunterladbar; Prompt-Anweisungen unter Einstellungen → RAG-Prompts anpassbar.</li><li><b>Export im neuen Handbuch-Design (<code class="mono">hbx-*</code>)</b>: Word (.docx)/PDF-Export mit Deckblatt, Inhaltsverzeichnis mit Status, Kapitel-Icons, farbigen Hinweis-/Warn-/Tipp-Boxen, Rollen-Abschnitten, Kopf-/Fußzeile mit Seitenzahl; Quelle wählbar (neues Handbuch aus dem Editor-Register, aktueller Kapitel-Generator-Stand, oder &quot;bestes verfügbares&quot;), Umfang (komplett/ein Kapitel/alle Kapitel einzeln als ZIP); Ticketnummern und interne Kommentare werden nie exportiert.</li></ul></div>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 19060
+          async function manualGenerateChapters(resumeRun) {
+            var resume = (resumeRun &amp;&amp; resumeRun.groups) ? resumeRun : null;
+            var groups = resume ? resume.groups.slice() : manualTargetGroups();
+            if (!groups.length) { showToast(&quot;Keine Auswahl&quot;, &quot;Bitte mindestens ein Kapitel/Label-Themengebiet oder eine Domäne auswählen.&quot;, true); return; }
+            if (!sampleApi) { showToast(&quot;Nicht verfügbar&quot;, &quot;KI-Funktion ist in dieser Ansicht nicht verfügbar (nur innerhalb der Claude-Artifact-Laufzeit).&quot;, true); return; }
+            manualRunState = resume ? Object.assign({}, resume, { completed: (resume.completed || []).slice() }) : {
+              startedAt: new Date().toLocaleString(&quot;de-DE&quot;), role: role,
+              groups: groups.map(function (g) { return { kind: g.kind, name: g.name }; }), completed: []
+            };
+            await aiMetaPut(&quot;manualRun&quot;, manualRunState); // Grundlage fuer &quot;Lauf fortsetzen&quot;
+            aiCacheStats = { hits: 0, misses: 0 };
+            var matchedTickets = manualMatchedTickets(); // einmalig berechnet, nicht pro Gruppe
+            for (var i = 0; i &lt; groups.length; i++) {
+              var group = groups[i];
+              var rows = manualRowsForGroup(group, matchedTickets);
+              if (resume &amp;&amp; manualRunState.completed.indexOf(manualStorageKey(group)) !== -1 &amp;&amp; app.manualChapters[manualStorageKey(group)]) {
+                els.manualStatusNote.textContent = kindLabel + &quot; \&quot;&quot; + group.name + &quot;\&quot; bereits fertig – übersprungen.&quot;;
+                continue;
+              }
+              if (!rows.length) { els.manualStatusNote.textContent = kindLabel + &quot; \&quot;&quot; + group.name + &quot;\&quot; übersprungen (keine passenden Tickets).&quot;; continue; }
+              // ... Claude-Aufruf je Gruppe, Checkpoint alle MANUAL_RUN_CHECKPOINT_INTERVAL Durchgaenge
+            }
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-editor-neues-benutzerhandbuch-13" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Editor – neues Benutzerhandbuch <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;editor&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Eigenständiger 3-Spalten-Arbeitsbereich, um aus dem aktuellen Kapitel-Generator-Stand UND den KI-Verbesserungen (Sprachstil/Review) gezielt ein druckreifes, neues Benutzerhandbuch-Kapitel von Hand zusammenzustellen, zu bearbeiten und intern zu kommentieren.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Spalte 1 &quot;Aktueller Stand&quot;: zeigt den bestehenden Kapitel-Generator-Text, mit &quot;→ In neues Handbuch übernehmen&quot;.</li><li>Spalte 2 &quot;Verbesserungen&quot;: zwei Tabs – &quot;Verbesserungen&quot; (Diff-Ansicht der Sprachstil-Überarbeitung + Review-Befunde je Prüf-Skill mit Score-Badge, Severity-Einstufung kritisch/mittel/niedrig, Zitat, Vorschlag, &quot;Stelle im Editor markieren&quot;, &quot;Als Kommentar übernehmen&quot;) und &quot;Quellen &amp; Plausibilität&quot;.</li><li>Spalte 3 &quot;Neues Benutzerhandbuch&quot;: freier Editor (Textarea) mit Mini-Toolbar (Fett, Zwischenüberschrift, Liste, Warnung/Hinweis/Tipp-Tags, PKW-/Van-Tags), Live-Vorschau, Bearbeitungsstatus (Entwurf/In Prüfung/Freigegeben), <b>interne Kommentare</b> (nie im Export enthalten) mit Kennzeichnung &quot;erledigt&quot;.</li><li>Fenster-Layout umschaltbar (Grid/Frei, mit Zoom/Fenstersteuerung – <code class="mono">ed-grid</code>/<code class="mono">ed-mode-free</code>/<code class="mono">ed-zoom*</code>/<code class="mono">ed-winctl</code>).</li><li>Begriffs-Sperre/Übersetzungs-Popover (<code class="mono">ed-term-pop</code>): verhindert, dass KI-Überarbeitungen gesperrte Fachbegriffe verändern.</li><li>Fertigstellung: Zielordner wählen (File System Access API) + &quot;Neues Handbuch im Ordner ablegen&quot; – legt das fertige Kapitel direkt im Handbuch-Layout ab.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">edRenderAll()</code> orchestriert die drei Spalten (<code class="mono">edRenderSelectors/edRenderLeft/edRenderMid/edRenderRight</code>); <code class="mono">edRenderMid()</code> liest die Ergebnisse der im Benutzerhandbuch-Register ausgeführten Sprachstil- (<code class="mono">manualStyleResults</code>) und Review-Läufe (<code class="mono">manualReviewResults</code>) für das aktuell gewählte Kapitel und rendert sie als Diff bzw. Befundliste – der Editor erzeugt selbst keine neuen KI-Inhalte, sondern kuratiert/kombiniert bereits vorhandene.</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 22550
+          function edRenderMid() {
+            if (edMidTab === &quot;sources&quot;) { edRenderSources(); return; }
+            var key = edKey(), html = &quot;&quot;, n = 0;
+            var sr = manualStyleResults[key];
+            if (sr &amp;&amp; sr.pairs) {
+              var d = manualDiffHtml(sr.pairs, $jf(&quot;ed-mid-showdel&quot;).checked);
+              n += d.changes;
+              html += '&lt;div class=&quot;ed-block&quot;&gt;&lt;div class=&quot;ed-block-head&quot;&gt;✍️ Sprachstil &amp;amp; Nachbesserung · ' + d.changes + ' Änderung(en)&lt;/div&gt;' +
+                '&lt;div class=&quot;style-diff ed-diff&quot;&gt;' + d.html + &quot;&lt;/div&gt;&lt;/div&gt;&quot;;
+            }
+            var rr = manualReviewResults[key];
+            if (rr &amp;&amp; rr.res) {
+              REVIEW_SKILLS.forEach(function (s) {
+                var r = rr.res[s.id]; if (!r) return;
+                var items = (r.befunde || []).map(function (b, bi) {
+                  n++;
+                  var sev = /kritisch/i.test(b.schwere) ? &quot;rv-bad&quot; : (/mittel/i.test(b.schwere) ? &quot;rv-mid&quot; : &quot;rv-low&quot;);
+                  return '&lt;li&gt;&lt;span class=&quot;rv-sev ' + sev + '&quot;&gt;' + escapeHtml(b.schwere || &quot;–&quot;) + &quot;&lt;/span&gt; &lt;b&gt;&quot; + escapeHtml(b.kategorie || &quot;&quot;) + &quot;&lt;/b&gt;&quot; +
+                    (b.zitat ? ' &lt;q class=&quot;rv-quote&quot;&gt;' + escapeHtml(b.zitat) + &quot;&lt;/q&gt;&quot; : &quot;&quot;) +
+                    '&lt;div class=&quot;rv-line&quot;&gt;' + escapeHtml(b.problem || &quot;&quot;) + &quot;&lt;/div&gt;&quot; +
+                    (b.vorschlag ? '&lt;div class=&quot;rv-line rv-sugg&quot;&gt;→ ' + escapeHtml(b.vorschlag) + &quot;&lt;/div&gt;&quot; : &quot;&quot;) + &quot;&lt;/li&gt;&quot;;
+                }).join(&quot;&quot;);
+                html += '&lt;div class=&quot;ed-block&quot;&gt;&lt;div class=&quot;ed-block-head&quot;&gt;' + s.icon + &quot; &quot; + escapeHtml(s.name) + &quot; &quot; + reviewScoreBadge(r) + &quot;&lt;/div&gt;&quot; +
+                  (items ? '&lt;ul class=&quot;rv-list&quot;&gt;' + items + &quot;&lt;/ul&gt;&quot; : '&lt;p class=&quot;step-note&quot;&gt;Keine Befunde.&lt;/p&gt;') + &quot;&lt;/div&gt;&quot;;
+              });
+            }
+            $jf(&quot;ed-mid&quot;).innerHTML = html || '&lt;p class=&quot;empty-hint&quot;&gt;Keine Verbesserungen für dieses Kapitel.&lt;/p&gt;';
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-ergebnisse-14" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Ergebnisse <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;ergebnisse&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Übersicht aller im Benutzerhandbuch-Kapitel-Generator erzeugten Dokumente (Haupttext je Kapitel + die 3 Verbesserungs-Varianten) mit Datum, Status und direktem Export.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Tabelle: je Zeile ein Dokument (Haupttext oder eine der 3 Varianten) mit Datum, Kapitel, Typ, aktuellem Steuerung&amp;KPI-Gate (aus Einstellungen → Gliederung &amp; Steuerung), Export als Markdown/Word.</li><li>Designvorlagen-Vorschau: Farb-/Icon-Legende der im Word-/PDF-Export hinterlegten Gestaltung (Rollen-Überschriften, Hinweis-/Scope-Tags), identisch für beide Exportformate.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">manualErgebnisseRows()</code> liest <code class="mono">app.manualChapters</code> (Haupttexte) und deren <code class="mono">improved</code>-Unterobjekt (die 3 KI-Verbesserungs-Varianten) aus und baut daraus die flache Zeilenliste inkl. des Steuerung&amp;KPI-Gates je Kapitel.</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 20392
+          function manualErgebnisseRows() {
+            var rows = [];
+            Object.keys(app.manualChapters).forEach(function (title) {
+              var entry = app.manualChapters[title];
+              if (!entry.de) return;
+              var displayTitle = entry.groupKind === &quot;label&quot; ? entry.groupName + &quot; (Label-Themengebiet)&quot; : title;
+              var c = chapterByTitle(title);
+              var gate = c ? ensureChapterSteuerung(c).gate : null;
+              rows.push({ title: title, displayTitle: displayTitle, typeLabel: &quot;Haupttext (Benutzerhandbuch)&quot;, typeIcon: &quot;&quot;, date: entry.generatedAt, gate: gate, kind: &quot;haupttext&quot; });
+              var improved = entry.improved || {};
+              Object.keys(MANUAL_IMPROVE_VARIANTS).forEach(function (vk) {
+                var res = improved[vk];
+                if (!res || !res.text) return;
+                var v = MANUAL_IMPROVE_VARIANTS[vk];
+                rows.push({ title: title, displayTitle: displayTitle, typeLabel: v.label, typeIcon: v.icon, date: res.generatedAt, gate: gate, kind: vk });
+              });
+            });
+            return rows;
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-prozessbild-15" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Prozessbild <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;prozessbild&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Prozessdiagramm zur visuellen Einordnung für oneSCM-Endnutzer, aus denselben Tickets wie Releaseletter/Benutzerhandbuch/Clickanweisung.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>10 Design-Vorlagen (Farben) × 10 Bildformate/Visual-Arten frei kombinierbar.</li><li>Ticket-Quelle: Dashboard-Filter, Ticket-Keys oder Jira-Input-Ergebnis.</li><li>Bild-Download sowie Export der zugrundeliegenden Schritt-Tabelle als XLSX/DOCX/PDF.</li><li>Reihenfolge entspricht der Ticket-Liste (kein echter Prozessablauf); Beschriftungen bleiben Deutsch unabhängig von der Textsprache.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> Teilt sich die generische <code class="mono">gen-layout</code>/Ticket-Resolver-Infrastruktur mit den anderen 3 Generatoren (<code class="mono">resolveGeneratorTickets</code>), rendert aber statt Text ein selbst erzeugtes SVG (<code class="mono">mermaid-box</code>/<code class="mono">prozessbild-render</code>) nach Theme+Layout-Kombination.</p>
+          </section>
+          <section class="panel doku-section" id="doku-clickanweisung-16" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Clickanweisung <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;clickanweisung&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Schritt-für-Schritt-Bedienungsanleitung für oneSCM, nach Domäne gegliedert, ohne Jira-Ticket-Referenzen im Fließtext.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Jeder Schritt bekommt automatisch ein Form-Icon (● Aktion / ■ Eingabe / ▲ Bestätigung), aus dem Beschreibungstext erkannt.</li><li>Export als Markdown/DOCX/PDF/XLSX (Ticket-Tabelle, Nachvollzieh-Grundlage).</li><li><b>Layout-Export</b>: 5 selbst erzeugte Design-Vorlagen (Deckblatt + farbige Domänen-Abschnitte + Schritt-Karten mit Form-Icon-Badge) als DOCX/PDF – rein vektoriell/typografisch erzeugt, bewusst ohne Fotos/Stockbilder (keine Bildquelle vorhanden, nichts erfinden).</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">renderClickInstructions()</code> baut das Markdown-Rohgerüst aus <code class="mono">clickInstructionGroups(tickets)</code> (Gruppierung nach Domäne, <code class="mono">STEP_SHAPE_GLYPH</code> je erkannter Schrittform); <code class="mono">drawPdfStepBadge()</code> zeichnet dieselbe Form im PDF-Layout-Export als reine jsPDF-Vektorgrafik (Kreis/Quadrat/Dreieck mit zentrierter Nummer) statt eines Font-Icons/Emoji, da die Basis-Schriftart (Helvetica) kein zuverlässiges Symbol-Set unterstützt.</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 15010
+          function renderClickInstructions(name, tickets, lang) {
+            var i18n = GEN_I18N[genLang(lang)];
+            var lines = [&quot;# &quot; + i18n.clickTitle + &quot; (&quot; + name + &quot;)&quot;, &quot;&quot;, i18n.clickIntro, &quot;&quot;, i18n.iconLegend, &quot;&quot;];
+            var groups = clickInstructionGroups(tickets);
+            groups.forEach(function (g) {
+              lines.push(&quot;## &quot; + g.domain, &quot;&quot;);
+              if (!g.steps.length) lines.push(i18n.noStepsInDomain);
+              else g.steps.forEach(function (s, i) { lines.push((i + 1) + &quot;. &quot; + STEP_SHAPE_GLYPH[s.shape] + &quot; &quot; + s.text); });
+              lines.push(&quot;&quot;);
+            });
+            return lines.join(&quot;\n&quot;);
+          }
+          // Zeile 15046 - Schritt-Badge im PDF-Layout-Export: reine Vektorform
+          // (Kreis/Quadrat/Dreieck) statt Font-Icon/Emoji, da Helvetica kein
+          // zuverlaessiges Symbol-Set unterstuetzt.
+          function drawPdfStepBadge(doc, shape, cx, cy, r, fillHex, textHex, label) { /* ... */ }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-bilder-17" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Bilder <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;bilder&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Zentrale Galerie + Tabelle aller in der Sitzung erzeugten Prozessdiagramme und hochgeladener Bilder.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Upload per Datei-Dialog/Drag&amp;Drop/Zwischenablage (Strg+V).</li><li>Tabelle mit direkt editierbarer Beschreibung, Löschen (auch generierte Diagramme).</li><li>Hochgeladene Bilder zusätzlich verschlagwortbar mit Domäne/Kapitel/Schritt (für Clickanweisung).</li><li><b>OCR</b> (Tesseract.js, läuft im Browser, lädt beim ersten Lauf Erkennungsdaten nach) zur Textsuche in Bildern.</li><li>Rein technische Metadaten (Maße, Dateigröße, Helligkeit/Farbe) – explizit KEINE KI-Bildinterpretation.</li><li>Download einzelner Bilder.</li></ul></div>
+            <p class="callout" style="border-left-color:var(--backlog); background:var(--surface-2); padding:10px 14px; margin:10px 0;">Dieses Register ist NICHT dasselbe wie der im parallelen <code class="mono">jira_reelaseletter</code>-Repo entwickelte, gleichnamige Nav-Punkt &quot;Editor&quot; für Word/PowerPoint-Screen-Extraktion – in dieser v2.96.0-Version gibt es keinen Datei-Upload für .docx/.pptx mit automatischer Screen-Extraktion; Bilder werden hier ausschließlich direkt als Bilddatei hochgeladen oder im Register Prozessbild erzeugt.</p>
+          </section>
+          <section class="panel doku-section" id="doku-output-md-tickets-output-pdf-tickets-18" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Output MD Tickets / Output PDF Tickets <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;output-md&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Bereinigte Einzeltickets als Markdown- bzw. PDF-Dateien exportieren, gebündelt als ZIP.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Zeigt Anzahl ausgewählter/gesamt Tickets gemäß aktuellem Dashboard-Filter.</li><li>Ein Button je Register exportiert alle gefilterten Tickets als ZIP-Archiv mit einer Datei pro Ticket.</li></ul></div>
+          </section>
+          <section class="panel doku-section" id="doku-infobox-19" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Infobox <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;infobox&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Statische Kurzdokumentation der App direkt in der Anwendung – Zweck, Bereinigungsregeln, Mehrfach-Import-Verhalten, Grenzen der Parser.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Hauptziel/Funktionsüberblick.</li><li><b>Bereinigung</b>: Pseudonymisierung von Bearbeitern/Erstellern (&quot;Person N&quot;, sitzungskonsistent), Entfernung von Kommentaren/Beobachtern, E-Mail-Adressen, Telefonnummern, Adressen, Fahrgestellnummern/VIN, deutschen KFZ-Kennzeichen (musterbasiert, Best-Effort). Leere Felder werden nicht angezeigt/exportiert, in der Detailansicht aber als &quot;Nicht im Export enthalten&quot; ausgewiesen.</li><li><b>Mehrfach-Import</b>: Zusammenführung über den Ticket-Schlüssel, Änderungen erscheinen in Dateiverwaltung.</li><li><b>Grenzen</b>: unterstützte Exportformate, Hinweis auf das CLI-Tool <code class="mono">jira-releaseletter import</code> bei stark abweichender Struktur, Dokument-Generatoren liefern Rohgerüste statt fertiger Dokumente.</li></ul></div>
+          </section>
+          <section class="panel doku-section" id="doku-glossar-20" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Glossar <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;glossar&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Festes Begriffsverzeichnis zentraler App-Konzepte (statischer Inhalt) PLUS die über Verarbeitung Job 3 extrahierten Kandidaten.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Feste Grundtabelle: Schlüssel (Key), Status-Bucket, Domain, Pseudonymisierung, Import, Änderung/Duplikat, Issue-Tabellenexport, u. a.</li><li>Ergänzt um die in Verarbeitung → Job 3 gefundenen Glossar-Kandidaten (Status-/Typ-/Domain-Häufigkeitswerte).</li></ul></div>
+          </section>
+          <section class="panel doku-section" id="doku-synonyme-21" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Synonyme <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;synonyme&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Mehrere deutsche Begriffe mit derselben Bedeutung erhalten EINE verbindliche Übersetzung je Sprache (Englisch/Slowakisch/Hindi/Französisch), damit Generatoren nicht je nach verwendetem Synonym unterschiedlich übersetzen.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Tabelle: Hauptbegriff (DE), Synonyme (DE, kommagetrennt), 4 Zielsprachen, &quot;Fix-Sprache&quot; (Begriff wird in allen Inhalten immer in dieser Sprache dargestellt), neue Einträge hinzufügen.</li><li><b>Fixieren</b>: markiert einen Eintrag als redaktionell geprüft/final.</li><li>&quot;Fixierte Begriffe auf alle vorhandenen Texte anwenden&quot; – wendet die Fix-Sprachen-Regel rückwirkend auf bereits generierte Texte an.</li></ul></div>
+            <p style="margin:10px 0;"><b>Technischer Kern:</b> <code class="mono">termApply(text)</code> ersetzt alle fixierten Begriffe im Text durch die Zielsprachen-Variante (mit einfacher Pluralerkennung bei Englisch); <code class="mono">termMarkHtml(html)</code> markiert dieselben Begriffe in der Vorschau grün, ohne dabei HTML-Tags zu beschädigen (Split/Join um Tag-Grenzen).</p>
+            <p style="margin:12px 0 4px;"><b>Codeschnipsel:</b></p>
+            <pre class="doku-code mono">// Zeile 24042
+          function termApply(text) {
+            if (!text) return text;
+            var tc = termRules();
+            if (!tc.rules.length) return text;
+            var keep = [];
+            var s = String(text);
+            if (tc.markRe) s = s.replace(tc.markRe, function (m) { keep.push(m); return &quot;\u0000&quot; + (keep.length - 1) + &quot;\u0000&quot;; });
+            tc.rules.forEach(function (r) {
+              s = s.replace(r.re, function (m, base, suf) { return r.target + (r.lang === &quot;en&quot; &amp;&amp; suf &amp;&amp; /^e?s$/i.test(suf) ? &quot;s&quot; : &quot;&quot;); });
+            });
+            return s.replace(/\u0000(\d+)\u0000/g, function (m, i) { return keep[+i]; });
+          }
+          function termMarkHtml(html) {
+            var tc = termRules();
+            if (!tc.markRe || !html) return html;
+            return String(html).split(/(&lt;[^&gt;]+&gt;)/).map(function (part) {
+              if (!part || part[0] === &quot;&lt;&quot;) return part; // Tags unveraendert lassen
+              return part.replace(tc.markRe, function (m) {
+                var t = tc.targets.filter(function (x) { return m.toLowerCase().indexOf(x.text.toLowerCase()) === 0; })[0];
+                return '&lt;mark class=&quot;term-fixed&quot; title=&quot;Fixierter Begriff (' + (t &amp;&amp; t.lang === &quot;de&quot; ? &quot;Deutsch&quot; : &quot;Englisch&quot;) + ')&quot;&gt;' + m + &quot;&lt;/mark&gt;&quot;;
+              });
+            }).join(&quot;&quot;);
+          }</pre>
+          </section>
+          <section class="panel doku-section" id="doku-abkuerzungen-22" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Abkürzungen <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;abkuerzungen&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Großbuchstaben-Kürzel aus den geladenen Tickets (automatisch, über Verarbeitung Job 3) plus eine eigene, manuell gepflegte Übersetzungstabelle.</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li>Automatische Tabelle (aus Job 3): Kürzel, Häufigkeit, Beispiel-Tickets, unverbindlicher DE/EN-Bedeutungsvorschlag (&quot;–&quot; bei firmenspezifischen/uneindeutigen Kürzeln).</li><li>Manuelle Übersetzungstabelle: eigene Einträge mit Bedeutung in Deutsch + 4 weiteren Sprachen, <b>Fixieren</b> als redaktionell final (nutzt dieselbe <code class="mono">termApply</code>/<code class="mono">termMarkHtml</code>-Infrastruktur wie Synonyme).</li></ul></div>
+          </section>
+          <section class="panel doku-section" id="doku-einstellungen-23" style="padding:18px 22px; margin-bottom:18px;">
+            <h3 style="margin:0 0 4px;">Einstellungen <span class="mono" style="font-size:12px; color:var(--text-muted); font-weight:400;">(data-view=&quot;einstellungen&quot;)</span></h3>
+            <p style="margin:6px 0 10px;"><b>Zweck:</b> Zentrale Verwaltung der laufenden Sitzung und aller Stammdaten/Konfigurationen – kein Server, alle Daten liegen ausschließlich im Browser-Speicher und sind mit Schließen der Seite weg (außer Sitzung speichern/laden bzw. automatische IndexedDB-Persistenz).</p>
+            <div class="doku-funktionen"><b>Funktionen:</b><ul><li><b>Sitzung &amp; Verwaltung</b> – Sitzung speichern/laden (komplettes JSON mit Tickets, Imports, Änderungsverlauf, Protokoll, Bilder-Galerie, Listenauswahl, Aktiv/Inaktiv-Status, extrahierten Begriffen, Konfiguration), &quot;Alle Daten löschen&quot;, &quot;Sitzung zurücksetzen&quot; (nur Ausgangsdaten).</li><li><b>Stammdaten</b> – Punkte-System je Tickettyp, Labels-Kategorien (inkl. Sparte/Rolle/Sonderthemen), Status-Farben, Domänen-Kürzel, Domain-Normalisierung.</li><li><b>Gliederung &amp; Steuerung</b> – Benutzerhandbuch-Gliederung (Kapitel/Unterkapitel, Domänen-Zuordnung, Excel-Matrix-Upload inkl. Arbeitsblatt &quot;Uebergaenge&quot;), Steuerung &amp; KPI je Kapitel (Quellenabdeckung/Prüf-Erfüllungsquote/Kritische Befunde/Gate).</li><li><b>Rollen-Navigation</b> – Retail/Markt/MO/HQ-Rollendefinition für rollenspezifische Gliederungs-/Filter-Logik.</li><li><b>KI-Texterzeugung</b> – editierbare RAG-Prompts für alle KI-gestützten Textfunktionen (Kapitel-Generator, Jira-Input-Klassifikation, Review-Skills, Verbesserungs-Varianten, …), globaler Sprachstil, Negativliste (gelb markierte Begriffe in Releaseletter/Benutzerhandbuch).</li><li><b>Design</b> – Vorschau/Dokumentation der Prompts und Gestaltung der 3 Verbesserungs-Varianten (Enduser-Text/Fachtext/Kurzfassung).</li><li><b>Dokumentation</b> – eingebettete Testergebnisse/Testing-Infos der Webapp selbst (NICHT identisch mit dem hier neu angelegten Top-Level-Nav-Punkt &quot;Dokumentation&quot; mit dem Pflichtenheft – dieser Unterbereich liegt innerhalb von Einstellungen und zeigt Test-Durchläufe, nicht die Feature-Spezifikation).</li></ul></div>
+          </section>
+
         </section>
       </section>
 

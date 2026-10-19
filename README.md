@@ -38,3 +38,13 @@ ist aber ohne das ursprüngliche Build-Setup nicht weiterentwickelbar
 
 - `webapp/ticket_cockpit.html` — die vollständige Webapp (1 Datei, kein
   Server, kein Build-Schritt nötig zum Öffnen).
+
+## Dokumentation / Pflichtenheft (neu)
+
+In der Webapp wurde ein neuer Navigationsbereich **„Dokumentation"**
+ergänzt (ganz unten, vor „Einstellungen"). Er zeigt ein vollständiges
+Pflichtenheft für alle 24 Register dieser Version: je Register Zweck,
+Funktionsumfang und ein illustrierender Codeschnipsel (verbatim aus
+`webapp/ticket_cockpit.html`, mit Zeilenangabe). Nicht zu verwechseln
+mit dem gleichnamigen Unterbereich unter Einstellungen → Dokumentation,
+der dort die eingebetteten Testergebnisse der App selbst zeigt.
